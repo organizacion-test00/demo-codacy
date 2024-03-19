@@ -31,7 +31,7 @@ jobs:
         with:
           # Check https://github.com/codacy/codacy-analysis-cli#project-token to get your project token from your Codacy repository
           # You can also omit the token and run the tools that support default configurations
-          project-token: '27e72fea4c2943ed8c93bcbcc62e544e'
+          #project-token: '27e72fea4c2943ed8c93bcbcc62e544e'
           verbose: true
           output: results.sarif
           format: sarif
@@ -39,7 +39,6 @@ jobs:
           gh-code-scanning-compat: true
           # Force 0 exit code to allow SARIF file generation
           # This will handover control about PR rejection to the GitHub side
-          directory: 'biblioteca/catalogo_libros'
           max-allowed-issues: 2147483647
           
       # Upload the SARIF file generated in the previous step
