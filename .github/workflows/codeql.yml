@@ -9,7 +9,7 @@
 # the `language` matrix defined below to confirm you have the correct set of
 # supported CodeQL languages.
 #
-name: "Codacy"
+name: "CodeQL"
 
 on:
   push:
@@ -67,28 +67,42 @@ jobs:
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Autobuild
       uses: github/codeql-action/autobuild@v3
+
+    # ℹ️ Command-line programs to run using the OS shell.
+    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
+
+    #   If the Autobuild fails above, remove it and uncomment the following three lines.
+    #   modify them (or add more) to build your code if your project, please refer to the EXAMPLE below for guidance.
+
+    # - run: |
+    #     echo "Run, Build Application using script"
+    #     ./location_of_script_within_repo/buildscript.sh
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"
+
         #CODACY
-     # Execute Codacy Analysis CLI and generate a SARIF output with the security issues identified during the analysis
     - name: Run Codacy Analysis CLI
       uses: codacy/codacy-analysis-cli-action@1.1.0
       with:
-          # Check https://github.com/codacy/codacy-analysis-cli#project-token to get your project token from your Codacy repository
-          # You can also omit the token and run the tools that support default configurations
-          project-token: '27e72fea4c2943ed8c93bcbcc62e544e'
-          verbose: true
           output: results.sarif
+          project-token: '27e72fea4c2943ed8c93bcbcc62e544e'
           format: sarif
           # Adjust severity of non-security issues
           gh-code-scanning-compat: true
           # Force 0 exit code to allow SARIF file generation
-          # This will handover control about PR rejection to the GitHub side
+          # This will hand over control about PR rejection to the GitHub side
           max-allowed-issues: 2147483647
-          fail-if-incomplete: true
-
+      
       # Upload the SARIF file generated in the previous step
     - name: Upload SARIF results file
-      uses: codacy/codacy-analysis-cli-action@1.1.0
+      uses: github/codeql-action/upload-sarif@main
       with:
-          sarif_file: results.sarif  
+          sarif_file: results.sarif    
+ 
+    
+
  
     
