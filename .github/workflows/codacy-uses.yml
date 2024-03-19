@@ -43,6 +43,7 @@ jobs:
           
       # Upload the SARIF file generated in the previous step
       - name: Upload SARIF results file
-        uses: codacy/codacy-analysis-cli-action@1.1.0
+        uses: codacy/upload-sarif@main
         with:
           sarif_file: results.sarif
+          
